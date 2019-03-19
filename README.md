@@ -50,3 +50,6 @@ https://android.jlelse.eu/https-medium-com-yashsoniweb-android-tasks-ffbd547ff5b
 
 This is just a sample project 
 
+
+![bottomnavigation-api28](https://user-images.githubusercontent.com/5216040/54570964-e7d99400-499d-11e9-84b7-f7be0341f42a.gif)
+
