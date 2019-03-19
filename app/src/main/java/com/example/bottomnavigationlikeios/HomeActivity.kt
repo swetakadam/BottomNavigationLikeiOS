@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.widget.Button
 
 class HomeActivity : BaseActivity() {
@@ -26,6 +27,17 @@ class HomeActivity : BaseActivity() {
 
         }
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("sweta","on resume called")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("sweta","sweta home on start called")
 
     }
 }

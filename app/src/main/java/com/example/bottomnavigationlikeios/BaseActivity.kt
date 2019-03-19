@@ -1,6 +1,7 @@
 package com.example.bottomnavigationlikeios
 
 import android.app.ActivityManager
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
+import android.support.v4.content.ContextCompat.getSystemService
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 
@@ -36,14 +38,19 @@ abstract class BaseActivity : AppCompatActivity(), OnNavigationItemSelectedListe
         updateNavigationBarState()
     }
 
+
     // Remove inter-activity transition to avoid screen tossing on tapping bottom navigation items
     public override fun onPause() {
         super.onPause()
-        overridePendingTransition(0, 0)
+        //overridePendingTransition(R.anim.fade_in,R.anim.fade_out)
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        navigationView.postDelayed({
+
             val itemId = item.itemId
 
             val pref = PreferenceManager.getDefaultSharedPreferences(this)
@@ -67,6 +74,8 @@ abstract class BaseActivity : AppCompatActivity(), OnNavigationItemSelectedListe
                                 R.id.navigation_home
                             )
                         )
+                        overridePendingTransition(R.anim.fade_in,R.anim.fade_out)
+
                     } else {
                         moveToFront(taskId)
                     }
@@ -80,6 +89,8 @@ abstract class BaseActivity : AppCompatActivity(), OnNavigationItemSelectedListe
                                 R.id.navigation_dashboard
                             )
                         )
+                        overridePendingTransition(R.anim.fade_in,R.anim.fade_out)
+
                     } else {
                         moveToFront(taskId)
                     }
@@ -93,17 +104,14 @@ abstract class BaseActivity : AppCompatActivity(), OnNavigationItemSelectedListe
                                 R.id.navigation_notifications
                             )
                         )
+                        overridePendingTransition(R.anim.fade_in,R.anim.fade_out)
+
                     } else {
                         moveToFront(taskId)
                     }
                 }
             }
 
-
-            //finish();
-
-
-        }, 300)
         return true
     }
 
@@ -149,10 +157,11 @@ abstract class BaseActivity : AppCompatActivity(), OnNavigationItemSelectedListe
 
     }
 
-    protected fun moveToFront(taskId: Int) {
-        if (Build.VERSION.SDK_INT >= 11) { // honeycomb
+    private fun moveToFront(taskId: Int) {
+        if (Build.VERSION.SDK_INT >= 16) { // honeycomb
             val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            activityManager.moveTaskToFront(taskId, ActivityManager.MOVE_TASK_NO_USER_ACTION)
+            val options = ActivityOptions.makeCustomAnimation(this,R.anim.fade_in, R.anim.fade_out)
+            activityManager.moveTaskToFront(taskId, ActivityManager.MOVE_TASK_NO_USER_ACTION,options.toBundle())
         }
     }
 
@@ -162,9 +171,14 @@ abstract class BaseActivity : AppCompatActivity(), OnNavigationItemSelectedListe
         selectBottomNavigationBarItem(actionId)
     }
 
-    internal fun selectBottomNavigationBarItem(itemId: Int) {
+    private fun selectBottomNavigationBarItem(itemId: Int) {
         val item = navigationView.menu.findItem(itemId)
         item.isChecked = true
+    }
+
+    private fun unselectBottomNavigationBarItem(itemId: Int) {
+        val item = navigationView.menu.findItem(itemId)
+        item.isChecked = false
     }
 
     abstract fun getContentViewId(): Int

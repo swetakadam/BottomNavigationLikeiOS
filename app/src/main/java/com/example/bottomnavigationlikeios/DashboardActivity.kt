@@ -3,6 +3,7 @@ package com.example.bottomnavigationlikeios
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 
 class DashboardActivity : BaseActivity() {
@@ -26,5 +27,17 @@ class DashboardActivity : BaseActivity() {
             startActivity(a)
 
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("sweta","sweta dashboard on start called")
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("sweta","on resume called")
     }
 }
